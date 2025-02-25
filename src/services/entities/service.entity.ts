@@ -14,4 +14,5 @@ export class Service {
   vehicle_km: string;
   complement: string;
   level_to_schedule: string;
+  status: string;
 }

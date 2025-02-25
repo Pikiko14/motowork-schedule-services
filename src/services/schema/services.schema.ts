@@ -37,6 +37,13 @@ export class Service {
 
   @Prop({ default: 'Muy fácil' })
   level_to_schedule: string;
+
+  @Prop({
+    type: String,
+    enum: ['pendiente', 'confirmada', 'aceptada', 'completada', 'rechazada'],
+    default: 'pendiente',
+  })
+  status: string;
 }
 
 export const ServiceSchema = SchemaFactory.createForClass(Service);
