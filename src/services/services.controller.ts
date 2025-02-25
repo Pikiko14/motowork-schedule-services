@@ -7,14 +7,16 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
-import { AuthGuard } from '../commons/guards/auth.guard';
 import { ServicesService } from './services.service';
-import { Scopes } from 'src/commons/decorators/scope.decorator';
+import { AuthGuard } from '../commons/guards/auth.guard';
+import { HostGuard } from 'src/commons/guards/host.guard';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { ScopesGuard } from 'src/commons/guards/scopes.guard';
-import { HostGuard } from 'src/commons/guards/host.guard';
+import { PaginationDto } from 'src/commons/dto/paginator.dto';
+import { Scopes } from 'src/commons/decorators/scope.decorator';
 
 @Controller('services')
 export class ServicesController {
@@ -30,8 +32,8 @@ export class ServicesController {
   @Get()
   @Scopes('list-services')
   @UseGuards(AuthGuard, ScopesGuard)
-  findAll() {
-    return this.servicesService.findAll();
+  findAll(@Query() pagination: PaginationDto) {
+    return this.servicesService.findAll(pagination);
   }
 
   @Get(':id')

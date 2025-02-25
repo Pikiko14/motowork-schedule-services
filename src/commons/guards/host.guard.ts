@@ -26,11 +26,11 @@ export class HostGuard implements CanActivate {
     ];
 
     const { headers } = context.switchToHttp().getRequest();
-    if (!origin.includes(headers.origin)) {
-      throw new UnauthorizedException(
-        'No puedes acceder a este recurso desde ese host',
-      );
-    }
+    // if (!origin.includes(headers.origin)) {
+    //   throw new UnauthorizedException(
+    //     'No puedes acceder a este recurso desde ese host',
+    //   );
+    // }
     return true
   }
 }

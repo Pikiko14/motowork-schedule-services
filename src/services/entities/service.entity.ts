@@ -1,6 +1,6 @@
 export class Service {
   hour: string;
-  date: string;
+  date: Date;
   hourType: string;
   client: {
     name: string;

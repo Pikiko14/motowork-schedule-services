@@ -9,7 +9,7 @@ export class Service {
   hour: string;
 
   @Prop({ required: true })
-  date: string;
+  date: Date;
 
   @Prop({ default: 'A.m.' })
   hourType: string;
