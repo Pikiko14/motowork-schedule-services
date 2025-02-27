@@ -2,6 +2,7 @@ import { envs } from './config';
 import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CachingModule } from './cache/cache.module';
 import { ServicesModule } from './services/services.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { ServicesModule } from './services/services.module';
       secret: envs.jwt_secret,
       signOptions: { expiresIn: '1d' },
     }),
+    CachingModule,
   ],
   controllers: [],
   providers: [],

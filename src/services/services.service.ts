@@ -1,14 +1,23 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { PaginationDto } from 'src/commons/dto/paginator.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { CacheService } from 'src/cache/services/cache.service.service';
 import { ServicesScheduleRepository } from './repository/services.repository';
 
 @Injectable()
-export class ServicesService extends ServicesScheduleRepository {
+export class ServicesService {
+  constructor(
+    private readonly repository: ServicesScheduleRepository,
+    private readonly cacheService: CacheService
+  ) {}
+  
   async create(createServiceDto: CreateServiceDto) {
     try {
-      const serviceSchedule = await this.save(createServiceDto);
+      const serviceSchedule = await this.repository.save(createServiceDto);
+
+      // clear cache
+      await this.cacheService.clearCache();
 
       return {
         success: true,
@@ -22,7 +31,23 @@ export class ServicesService extends ServicesScheduleRepository {
 
   async findAll(pagination: PaginationDto) {
     try {
-      const services = await this.getServices(pagination);
+      // validate cache
+      const cacheKey = `services:${JSON.stringify(pagination)}`;
+      const cacheData = await this.cacheService.getCache(cacheKey);
+      if (cacheData) {
+        return {
+          success: true,
+          data: cacheData,
+          message: 'Lista de servicios para el rango de fecha (desde cache)',
+        };
+      }
+
+      // get services from bbdd
+      const services = await this.repository.getServices(pagination);
+
+      if (services.length > 0) {
+        await this.cacheService.setCache(cacheKey, services);
+      }
 
       return {
         success: true,
