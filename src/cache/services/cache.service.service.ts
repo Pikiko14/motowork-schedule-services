@@ -8,7 +8,7 @@ export class CacheService {
 
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
-  async setCache(key: string, data: any, ttl = 50000): Promise<void> {
+  async setCache(key: string, data: any, ttl = 300000): Promise<void> {
     await this.cacheManager.set(key, JSON.stringify(data), ttl);
     this.logger.log(`Guardado en cache la llave ${key}!`);
   }
