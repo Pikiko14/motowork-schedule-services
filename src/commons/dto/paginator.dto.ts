@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsOptional, IsPositive, IsString } from 'class-validator';
+import { IsDate, IsJSON, IsOptional, IsPositive, IsString } from 'class-validator';
 
 export class PaginationDto {
 
@@ -25,4 +25,9 @@ export class PaginationDto {
   @IsString()
   @IsOptional()
   to?: string;
+
+  @IsString()
+  @IsOptional()
+  @Type(() => String)
+  filter: string = '';
 }

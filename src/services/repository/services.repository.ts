@@ -21,7 +21,7 @@ export class ServicesScheduleRepository {
 
   async getServices(paginationDto: PaginationDto): Promise<Service[]> {
     try {
-      const { page, perPage, search, from, to } = paginationDto;
+      const { page, perPage, search, from, to, filter } = paginationDto;
 
       const pageNumber = page;
       const itemsPerPage = perPage;
@@ -54,9 +54,19 @@ export class ServicesScheduleRepository {
       }
       
       if (from || to) {
+        const toDate = new Date(`${to}`);
+        const fromDate = new Date(`${from}`);
         query.date = {
-          $gte: new Date(from),
-          $lte: new Date(to),
+          $gte: fromDate,
+          $lte: toDate,
+        }
+      }
+
+      if (filter) {
+        const filterObj = JSON.parse(filter)
+        // valdiate status
+        if (filterObj.status_service) {
+          query.status = filterObj.status_service;
         }
       }
 
