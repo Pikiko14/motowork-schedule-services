@@ -34,6 +34,7 @@ export class MailQueueProcessor {
 
       // Renderizar la plantilla con Mustache
       const htmlContent = mustache.render(template, {
+        reference: content._id,
         firstName: content.client.name,
         lastName: content.client.lastName,
         email: content.client.email,

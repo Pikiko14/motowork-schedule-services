@@ -70,6 +70,17 @@
         border-radius: 50%;
         background-color: #0b0a1a;
       }
+      .confirmation {
+        background-color: #ED1C24;
+        color: white;
+        text-decoration: none;
+        min-height: 48px;
+        display: inline-block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 160px;
+      }
     </style>
   </head>
   <body>
@@ -100,7 +111,9 @@
         <p>
           ✅ Te recordamos que debes confirmar tu cita en el siguiente enlace para poder ser angendado:
         </p>
-        <a href="{{url_confirmation}}">Confirmar agenda</a>
+        <center>
+          <a target="_blank" class="confirmation" href="{{url_confirmation}}?reference={{reference}}">Confirmar agenda</a>
+        </center>
       </div>
       <div class="footer">
         <p>
