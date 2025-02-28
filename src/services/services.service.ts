@@ -1,20 +1,30 @@
+import { Service } from './entities/service.entity';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { PaginationDto } from 'src/commons/dto/paginator.dto';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CacheService } from 'src/cache/services/cache.service.service';
+import { MailQueueService } from 'src/queues/mail-queue/mail-queue.service';
 import { ServicesScheduleRepository } from './repository/services.repository';
 
 @Injectable()
 export class ServicesService {
   constructor(
     private readonly repository: ServicesScheduleRepository,
-    private readonly cacheService: CacheService
+    private readonly cacheService: CacheService,
+    private readonly mailQueueService: MailQueueService
   ) {}
   
   async create(createServiceDto: CreateServiceDto) {
     try {
-      const serviceSchedule = await this.repository.save(createServiceDto);
+      const serviceSchedule = await this.repository.save(createServiceDto) as Service;
+
+      // send email to confirmation
+      await this.mailQueueService.sendMail(
+        serviceSchedule?.client?.email,
+        'Confirmación de servicio técnico',
+        serviceSchedule,
+      );
 
       // clear cache
       await this.cacheService.clearCache();

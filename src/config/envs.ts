@@ -7,6 +7,11 @@ interface EnvVars {
   APP_ENV: string;
   JWT_SECRET: string;
   MONGO_ATLAS_URL: string;
+  SMTP_HOST: string;
+  SMTP_PORT: number;
+  SMTP_SECURE: boolean;
+  SMTP_USER: string;
+  SMTP_PASS: string;
 }
 
 const envsSchema = joi.object({
@@ -14,7 +19,12 @@ const envsSchema = joi.object({
   DATABASE_URL: joi.string().required(),
   APP_ENV: joi.string().required(),
   JWT_SECRET: joi.string().required(),
-  MONGO_ATLAS_URL: joi.string().required()
+  MONGO_ATLAS_URL: joi.string().required(),
+  SMTP_HOST: joi.string().required(),
+  SMTP_PORT: joi.number().required(),
+  SMTP_SECURE: joi.boolean().required(),
+  SMTP_USER: joi.string().email().required(),
+  SMTP_PASS: joi.string().required(),
 })
 .unknown(true);
 
@@ -35,5 +45,10 @@ export const envs = {
   databaseUrl: envVars.DATABASE_URL,
   app_env: envVars.APP_ENV,
   jwt_secret: envVars.JWT_SECRET,
-  atlas_url: envVars.MONGO_ATLAS_URL
+  atlas_url: envVars.MONGO_ATLAS_URL,
+  smtp_host: envVars.SMTP_HOST,
+  smtp_port: envVars.SMTP_PORT,
+  smtp_secure: envVars.SMTP_SECURE,
+  smtp_user: envVars.SMTP_USER,
+  smtp_pass: envVars.SMTP_PASS
 }
