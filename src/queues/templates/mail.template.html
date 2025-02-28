@@ -72,13 +72,12 @@
       }
       .confirmation {
         background-color: #ED1C24;
-        color: white;
-        text-decoration: none;
-        min-height: 48px;
-        display: inline-block;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        color: white !important;
+        text-decoration: none!important;
+        min-height: 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         width: 160px;
       }
     </style>
@@ -101,8 +100,8 @@
           información:
         </p>
         <p>🏍️ <strong>Tipo de moto:</strong> {{vehicle_type}}</p>
-        <p>📏 <strong>Kilometraje:</strong> {{vehicle_km}} km</p>
-        <p>📏 <strong>Placa:</strong> {{vehicle_dni}} km</p>
+        <p>📏 <strong>Kilometraje:</strong> {{vehicle_km}}</p>
+        <p>📏 <strong>Placa:</strong> {{vehicle_dni}}</p>
         <p>📅 <strong>Fecha:</strong> {{date}}</p>
         <p>⏰ <strong>Hora:</strong> {{hour}} {{hour_type}}</p>
         <h3>🔧 Descripción del problema:</h3>
@@ -112,10 +111,10 @@
           ✅ Te recordamos que debes confirmar tu cita en el siguiente enlace para poder ser angendado:
         </p>
         <center>
-          <a target="_blank" class="confirmation" href="{{url_confirmation}}/servicio-tecnico/{{reference}}/validacion">
-            <span style="display: block; margin: 8px 0px;">
+          <a target="_blank" class="confirmation" href="{{url_confirmation}}">
+            <span style="display: inline-block; margin: 14px auto;">
               <center>
-                Confirmar Agenda
+                <strong>Confirmar Agenda</strong>
               </center>
             </span>
           </a>

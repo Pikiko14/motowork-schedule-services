@@ -34,7 +34,6 @@ export class MailQueueProcessor {
 
       // Renderizar la plantilla con Mustache
       const htmlContent = mustache.render(template, {
-        reference: content._id,
         firstName: content.client.name,
         lastName: content.client.lastName,
         email: content.client.email,
@@ -47,7 +46,7 @@ export class MailQueueProcessor {
         date: content.date.split('T').shift(),
         hour: content.hour,
         hour_type: content.hourType,
-        url_confirmation: `${envs.app_url}/servicio-tecnico/validacion`,
+        url_confirmation: `${envs.app_url}/servicio-tecnico/${content._id}/validacion`,
       });
 
       // send mail
