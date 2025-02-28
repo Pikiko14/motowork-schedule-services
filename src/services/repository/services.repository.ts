@@ -81,4 +81,13 @@ export class ServicesScheduleRepository {
       throw new InternalServerErrorException(error.message);
     }
   }
+
+  async findOne(id: string): Promise<Service> {
+    try {
+      const serviceSchedule = await this.serviceModel.findById(id);
+      return serviceSchedule;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
 }

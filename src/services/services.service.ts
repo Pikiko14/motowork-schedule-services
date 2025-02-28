@@ -69,15 +69,34 @@ export class ServicesService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} service`;
-  }
+  async findOne(id: string) {
+    try {
+      // validate cache
+      const cacheKey = `services:${JSON.stringify(id)}`;
+      const cacheData = await this.cacheService.getCache(cacheKey);
+      if (cacheData) {
+        return {
+          success: true,
+          data: cacheData,
+          message: 'Información del servicio agendado (Desde cache)',
+        };
+      }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
-    return `This action updates a #${id} service`;
-  }
+      // get services from bbdd
+      const service = await this.repository.findOne(id);
 
-  remove(id: number) {
-    return `This action removes a #${id} service`;
+      // set data in cache
+      if (service) {
+        await this.cacheService.setCache(cacheKey, service);
+      }
+
+      return {
+        success: true,
+        data: service,
+        message: 'Información del servicio agendado',
+      };
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 }

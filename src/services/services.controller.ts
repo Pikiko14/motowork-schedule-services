@@ -36,18 +36,9 @@ export class ServicesController {
     return this.servicesService.findAll(pagination);
   }
 
-  @Get(':id')
+  @UseGuards(HostGuard)
+  @Get(':id/validation')
   findOne(@Param('id') id: string) {
-    return this.servicesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
-    return this.servicesService.update(+id, updateServiceDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.servicesService.remove(+id);
+    return this.servicesService.findOne(id);
   }
 }
