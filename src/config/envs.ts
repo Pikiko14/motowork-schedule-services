@@ -12,6 +12,8 @@ interface EnvVars {
   SMTP_SECURE: boolean;
   SMTP_USER: string;
   SMTP_PASS: string;
+  MOTOWORK_EMAIL: string;
+  APP_URL: string;
 }
 
 const envsSchema = joi.object({
@@ -25,6 +27,8 @@ const envsSchema = joi.object({
   SMTP_SECURE: joi.boolean().required(),
   SMTP_USER: joi.string().email().required(),
   SMTP_PASS: joi.string().required(),
+  MOTOWORK_EMAIL: joi.string().required(),
+  APP_URL: joi.string().required(),
 })
 .unknown(true);
 
@@ -50,5 +54,7 @@ export const envs = {
   smtp_port: envVars.SMTP_PORT,
   smtp_secure: envVars.SMTP_SECURE,
   smtp_user: envVars.SMTP_USER,
-  smtp_pass: envVars.SMTP_PASS
+  smtp_pass: envVars.SMTP_PASS,
+  motowork_email: envVars.MOTOWORK_EMAIL,
+  app_url: envVars.APP_URL,
 }
