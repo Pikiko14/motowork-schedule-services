@@ -1,6 +1,7 @@
 import { FilterQuery, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Service } from '../schema/services.schema';
+import { UpdateServiceDto } from '../dto/update-service.dto';
 import { InternalServerErrorException } from '@nestjs/common';
 import { PaginationDto } from 'src/commons/dto/paginator.dto';
 import { CreateServiceDto } from './../dto/create-service.dto';
@@ -87,7 +88,15 @@ export class ServicesScheduleRepository {
       const serviceSchedule = await this.serviceModel.findById(id);
       return serviceSchedule;
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async update(id: string, body: Service | UpdateServiceDto) {
+    try {
+      return await this.serviceModel.findByIdAndUpdate(id, body, { new: true });
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
     }
   }
 }

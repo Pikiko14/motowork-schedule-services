@@ -3,9 +3,8 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
-  Delete,
   UseGuards,
   Query,
 } from '@nestjs/common';
@@ -39,6 +38,12 @@ export class ServicesController {
   @UseGuards(HostGuard)
   @Get(':id/validation')
   findOne(@Param('id') id: string) {
-    return this.servicesService.findOne(id);
+    return this.servicesService.findOneAndUpdate(id);
+  }
+
+  @UseGuards(HostGuard)
+  @Put(':id')
+  async update(@Body() updateServiceDto: UpdateServiceDto, @Param('id') id: string) {
+    return await this.servicesService.update(id, updateServiceDto);
   }
 }

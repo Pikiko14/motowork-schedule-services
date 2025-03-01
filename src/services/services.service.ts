@@ -2,7 +2,7 @@ import { Service } from './entities/service.entity';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { PaginationDto } from 'src/commons/dto/paginator.dto';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CacheService } from 'src/cache/services/cache.service.service';
 import { MailQueueService } from 'src/queues/mail-queue/mail-queue.service';
 import { ServicesScheduleRepository } from './repository/services.repository';
@@ -69,7 +69,7 @@ export class ServicesService {
     }
   }
 
-  async findOne(id: string) {
+  async findOneAndUpdate(id: string) {
     try {
       // validate cache
       const cacheKey = `services:${JSON.stringify(id)}`;
@@ -85,6 +85,14 @@ export class ServicesService {
       // get services from bbdd
       const service = await this.repository.findOne(id);
 
+      if (service.status === 'pendiente') {
+        service.status = 'confirmada';
+        await  this.repository.update(id, service);
+        
+        // clear cache
+        await this.cacheService.clearCache();
+      }
+
       // set data in cache
       if (service) {
         await this.cacheService.setCache(cacheKey, service);
@@ -97,6 +105,23 @@ export class ServicesService {
       };
     } catch (error) {
       throw new BadRequestException();
+    }
+  }
+
+  async update(id: string, updateServicesDto: UpdateServiceDto) {
+    try {
+      const service = await  this.repository.update(id, updateServicesDto);
+
+      // clear cache
+      await this.cacheService.clearCache();
+
+      return {
+        success: true,
+        data: service,
+        message: 'Se ha modificado el servicio correctamente.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
     }
   }
 }
