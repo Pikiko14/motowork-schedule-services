@@ -15,11 +15,12 @@ export class MailQueueProcessor {
     this.transporter = nodemailer.createTransport({
       host: envs.smtp_host,
       port: envs.smtp_port,
-      secure: false,
+      secure: true,
       auth: {
         user: envs.smtp_user,
         pass: envs.smtp_pass,
       },
+      requireTLS: false,
     });
   }
 
@@ -51,7 +52,7 @@ export class MailQueueProcessor {
 
       // send mail
       await this.transporter.sendMail({
-        from: `${envs.motowork_email}`,
+        from: '_mainaccount@motowork.co',
         to: email,
         subject: subject,
         html: htmlContent,
